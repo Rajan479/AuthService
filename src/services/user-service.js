@@ -1,4 +1,7 @@
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const UserRepository  = require('../repository/user-repository.js');
+const { JWT_SECRET } = require('../config/serverConfig.js');
 
 const create = async function(data){
     try {
@@ -30,8 +33,39 @@ const get = async function(id){
     }
 }
 
+const createToken = function(user){
+    try {
+       const token = jwt.sign(user, JWT_SECRET, { expiresIn : '1d' });
+       return token
+    } catch (error) {
+        console.log("Something went wrong in token creation");
+        throw error;
+    }
+}
+
+const verifyToken = function(token){
+    try {
+        const result = jwt.verify(token, JWT_SECRET);
+        return result;
+    } catch (error) {
+        console.log("Something went wrong in token validation", error);
+        throw error;
+    }
+}
+
+const checkPassword = function(userInputPlainPassword, encryptedPassword){
+    try {
+        return bcrypt.compareSync(userInputPlainPassword, encryptedPassword);
+    } catch (error) {
+        console.log("Something went wrong on service layer");
+        throw error;
+    }
+}
+
 module.exports = {
     create,
     destroy,
-    get
+    get,
+    createToken,
+    verifyToken
 }
