@@ -1,4 +1,3 @@
-const { where } = require('sequelize');
 const { User } = require('../models/index.js');
 
 const createUser = async function(data){
@@ -25,7 +24,20 @@ const deleteUser = async function(userId){
     }
 }
 
+const getUserById = async function(userId){
+    try {
+        const user = await User.findByPK(userId, {
+            attributes : ['id', 'email']
+        });
+        return user;
+    } catch (error) {
+        console.log("Something went wrong on repository layer");
+        throw error;
+    }
+}
+
 module.exports = {
     createUser,
-    deleteUser
+    deleteUser,
+    getUserById
 }

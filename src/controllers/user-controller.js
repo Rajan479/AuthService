@@ -43,6 +43,28 @@ const destroy = async function(request, response){
     }
 }
 
+const get = async function(request, response){
+    try {
+        const user = await UserService.get({
+            id : request.id
+        });
+        return response.status(200).json({
+            data : user,
+            success : true,
+            message : "Successfully fetched a user",
+            err : {}
+        })
+    } catch (error) {
+        console.log(error);
+        return response.status(500),json({
+            data : {},
+            message : "Not able to fetch a user",
+            success : false,
+            err : error
+        });
+    }
+}
+
 module.exports = {
     create,
     destroy

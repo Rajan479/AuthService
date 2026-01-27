@@ -20,7 +20,18 @@ const destroy = async function(id){
     }
 }
 
+const get = async function(id){
+    try {
+        const user = await UserRepository.getUserById(id);
+        return user;
+    } catch (error) {
+        console.log("Something went wrong on service layer");
+        throw error;
+    }
+}
+
 module.exports = {
     create,
-    destroy
+    destroy,
+    get
 }
