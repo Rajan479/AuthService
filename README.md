@@ -1,0 +1,1 @@
+(1) Added the User model and migrations, added the email and password fields
