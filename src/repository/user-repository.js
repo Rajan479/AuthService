@@ -36,8 +36,23 @@ const getUserById = async function(userId){
     }
 }
 
+const getUserByEmail = async function(email){
+    try {
+        const user = await User.findOne({
+            where : {
+                email : email
+            }
+        });
+        return user;
+    } catch (error) {
+        console.log("Something went wrong on repository layer");
+        throw error;
+    }
+}
+
 module.exports = {
     createUser,
     deleteUser,
-    getUserById
+    getUserById,
+    getUserByEmail
 }

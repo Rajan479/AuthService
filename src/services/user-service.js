@@ -33,6 +33,15 @@ const get = async function(id){
     }
 }
 
+const signin = async function(email, plainPassword){
+    try {
+        const user = await UserRepository.getUserByEmail(email);
+    } catch (error) {
+        console.log("Something went wrong in the signin process");
+        throw error;
+    }
+}
+
 const createToken = function(user){
     try {
        const token = jwt.sign(user, JWT_SECRET, { expiresIn : '1d' });
@@ -67,5 +76,6 @@ module.exports = {
     destroy,
     get,
     createToken,
-    verifyToken
+    verifyToken,
+    checkPassword
 }
