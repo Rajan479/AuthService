@@ -86,7 +86,7 @@ const isAuthenticated = async function(token){
         if(!response){
             throw {error : 'Invalid token'};
         }
-        const user = UserRepository.getUserById(response.id);
+        const user = await UserRepository.getUserById(response.id);
         if(!user){
             throw {error : 'User not found with corresponding token'};
         }
