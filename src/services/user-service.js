@@ -36,6 +36,15 @@ const get = async function(id){
 const signin = async function(email, plainPassword){
     try {
         const user = await UserRepository.getUserByEmail(email);
+        const passwordsMatch = checkPassword(plainPassword, user.password);
+
+        if(!passwordsMatch){
+            console.log("Password does not match");
+            throw { error : 'Incorrect password' };
+        }
+
+        const newJwtToken = createToken({ email : user.email, id: user.id });
+        return newJwtToken;
     } catch (error) {
         console.log("Something went wrong in the signin process");
         throw error;
@@ -71,11 +80,30 @@ const checkPassword = function(userInputPlainPassword, encryptedPassword){
     }
 }
 
+const isAuthenticated = async function(token){
+    try {
+        const response = verifyToken(token);
+        if(!response){
+            throw {error : 'Invalid token'};
+        }
+        const user = UserRepository.getUserById(response.id);
+        if(!user){
+            throw {error : 'User not found with corresponding token'};
+        }
+        return user.id;
+    } catch (error) {
+        console.log("Something went wrong on service layer");
+        throw error;
+    }
+}
+
 module.exports = {
     create,
     destroy,
     get,
     createToken,
     verifyToken,
-    checkPassword
+    checkPassword,
+    signin,
+    isAuthenticated
 }

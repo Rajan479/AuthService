@@ -26,7 +26,7 @@ const deleteUser = async function(userId){
 
 const getUserById = async function(userId){
     try {
-        const user = await User.findByPK(userId, {
+        const user = await User.findByPk(userId, {
             attributes : ['id', 'email']
         });
         return user;
