@@ -1,4 +1,4 @@
-const { User } = require('../models/index.js');
+const { User, Role } = require('../models/index.js');
 
 const createUser = async function(data){
     try {
@@ -50,9 +50,25 @@ const getUserByEmail = async function(email){
     }
 }
 
+const isAdmin = async function(userId){
+    try {
+        const user = await User.findByPk(userId);
+        const adminRole = await Role.findOne({
+            where : {
+                name : 'ADMIN'
+            }
+        });
+        return user.hasRole(adminRole);
+    } catch (error) {
+        console.log("Something went wrong on repository layer");
+        throw error;
+    }
+}
+
 module.exports = {
     createUser,
     deleteUser,
     getUserById,
-    getUserByEmail
+    getUserByEmail,
+    isAdmin
 }

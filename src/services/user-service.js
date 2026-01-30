@@ -97,6 +97,15 @@ const isAuthenticated = async function(token){
     }
 }
 
+const isAdmin = async function(userId){
+    try {
+        return UserRepository.isAdmin(userId);
+    } catch (error) {
+        console.log("Something went wrong on service layer");
+        throw error;
+    }
+}
+
 module.exports = {
     create,
     destroy,
@@ -105,5 +114,6 @@ module.exports = {
     verifyToken,
     checkPassword,
     signin,
-    isAuthenticated
+    isAuthenticated,
+    isAdmin
 }

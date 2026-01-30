@@ -13,6 +13,20 @@ const validateUserAuth = function(request, response, next){
     next();
 }
 
+const validateIsAdminRequest = function(request, response, next){
+    if(!request.body.id){
+        return response.json({
+            success : false,
+            data : {},
+            err : 'User id not given',
+            message : 'Something went wrong'
+        })
+    }
+    
+    next();
+}
+
 module.exports = {
-    validateUserAuth
+    validateUserAuth,
+    validateIsAdminRequest
 }
